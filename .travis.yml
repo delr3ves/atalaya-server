@@ -2,12 +2,26 @@ sudo: required
 
 language: python
 
+env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
 services:
   - docker
 
 before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
   - docker build -t delr3ves/atalaya-server .
 
 script:
   - echo "Pass a linter here"
   - python manage.py test
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "release" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker push delr3ves/atalaya-server;
+    fi
