@@ -1,0 +1,23 @@
+version: '1.0'
+
+steps:
+  unit-tests:
+    image: codefresh/buildpacks:nodejs-5
+    working-directory : ${{initial-clone}}
+    commands:
+      - echo "Do something when you have tests"
+
+  build-step:
+    type: build
+    description: Perform the build
+    image_name: delr3ves/atalaya-server
+    tag: ${{CF_BRANCH}}
+
+  push_to_registry:
+    type: push
+    description: Upload docker image to dockerhub
+    candidate: ${{build-step}}
+    tag: latest
+    when:
+      branch:
+        only: [ release ]
