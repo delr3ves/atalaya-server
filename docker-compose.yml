@@ -2,10 +2,11 @@ version: '2'
 services:
   web:
     build: .
+    privileged: true
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
-      - atalaya_server_data:/data/
+      - atalaya_server_data:/code/data
     ports:
       - "8000:8000"
 

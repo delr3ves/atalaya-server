@@ -16,7 +16,19 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from rest_framework import routers
+from atalaya_server.account.views import UserViewSet, GroupViewSet
+from actuators.views import ActuatorsViewSet
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'groups', GroupViewSet)
+router.register(r'actuators', ActuatorsViewSet)
+
 urlpatterns = [
+    url(r'^', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^actuators/', include('actuators.urls')),
+    url(r'^api/', include('rest_framework.urls', namespace='rest_framework'))
+
 ]
