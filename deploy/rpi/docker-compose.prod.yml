@@ -1,0 +1,39 @@
+version: '2'
+services:
+  postgres:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_development_data:/var/lib/postgresql/data/
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - /www/static
+    volumes_from:
+      - web
+    links:
+      - web:web
+
+  web:
+    restart: always
+    build: ../../.
+    privileged: true
+    expose:
+      - "8000"
+    links:
+      - postgres:postgres
+    volumes:
+      - ../../.:/code
+      - atalaya_server_data:/code/data
+    env_file: .env
+    command: /usr/local/bin/gunicorn atalaya_server.wsgi:application -w 2 -b :8000
+
+volumes:
+  atalaya_server_data:
+  pg_data:

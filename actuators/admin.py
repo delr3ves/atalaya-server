@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import Actuator
+from .models import SinglePinActuator
 
-admin.site.register(Actuator)
+admin.site.register(SinglePinActuator)

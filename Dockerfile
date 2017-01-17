@@ -1,8 +1,9 @@
-FROM hypriot/rpi-python
+FROM delr3ves/raspbian-python3:0.0.1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 ADD . /code/
+ADD ./atalaya_server/rpi_settings.py /code/atalaya_server/custom_settings.py
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

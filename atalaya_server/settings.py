@@ -116,12 +116,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
     'PAGE_SIZE': 50
 }
 
 UPLOAD_FILES_TO = os.path.join(BASE_DIR, 'data/upload/')
+
+try:
+    from atalaya_server.custom_settings import *
+except ImportError:
+    print("Warning: custom_settings could not be loaded")

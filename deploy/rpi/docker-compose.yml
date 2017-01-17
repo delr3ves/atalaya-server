@@ -1,0 +1,30 @@
+version: '2'
+services:
+  postgres:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_development_data:/var/lib/postgresql/data/
+
+  web:
+    restart: always
+    build: ../../.
+    privileged: true
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    links:
+      - postgres:postgres
+    volumes:
+      - ../../.:/code
+      - ./dev_settings.py:/code/atalaya_server/custom_settings.py
+      - atalaya_server_development_data:/code/data
+    env_file: .env
+    command: python3 manage.py runserver 0.0.0.0:8000
+
+volumes:
+  atalaya_server_development_data:
+  pg_development_data:

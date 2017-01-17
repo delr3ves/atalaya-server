@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from rest_framework import viewsets
-from actuators.models import Actuator
+from actuators.models import SinglePinActuator
 from actuators.serializers import ActuatorSerializer
 
 
@@ -12,5 +12,5 @@ class ActuatorsViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Actuator.objects.all()
+    queryset = SinglePinActuator.objects.all()
     serializer_class = ActuatorSerializer
